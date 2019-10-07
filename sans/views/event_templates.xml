@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="registration_attendee_details_address" inherit_id="website_event.registration_attendee_details" name="Registration Attendee Details with Address">
+    <data>
+        <!-- Attendee specific questions -->
+        <xpath expr="//main" position="replace">
+            <main class="modal-body">
+                        <div class="container">
+                            <t t-set="counter_type" t-value="1"/>
+                            <t t-set="counter" t-value="0"/>
+                            <t t-foreach="tickets" t-as="ticket">
+                                <h4 class="o_page_header mt16">
+                                    <strong>
+                                        Ticket Type #<t t-raw="counter_type"/>: <t t-esc="ticket['name']"/>
+                                        <t t-if="ticket['price'] == 0">(Free)</t>
+                                    </strong>
+                                </h4>
+                                <div class="row">
+                                    <div class="col-lg-2"><strong>Name</strong></div>
+                                    <t t-if="'Online' in ticket['name']">
+                                        <div class="col-lg-4"><strong>Address</strong></div>
+                                        <div class="col-lg-2"><strong>City</strong></div>
+                                        <div class="col-lg-2"><strong>State</strong></div>
+                                        <div class="col-lg-2"><strong>Zip</strong></div>
+                                    </t>
+                                </div>
+                                <t t-foreach="range(1, ticket['quantity'] + 1)" t-as="att_counter" name="attendee_loop">
+                                    <t t-set="counter" t-value="counter + 1"/>
+                                    <div class="row mb4">
+                                        <t t-set="attendee_placeholder">Attendee #%s</t>
+                                        <div class="col-lg-2"><input class='form-control' type='text' t-attf-name="#{counter}-name" required="This field is required" t-att-value="attendee_placeholder %counter"/></div>
+                                        <t t-if="'Online' in ticket['name']">
+                                            <div class="col-lg-4"><input class='form-control' type='text' t-attf-name="#{counter}-address"/></div>
+                                            <div class="col-lg-2"><input class='form-control' type='text' t-attf-name="#{counter}-city"/></div>
+                                            <div class="col-lg-2"><input class='form-control' type='text' t-attf-name="#{counter}-state"/></div>
+                                            <div class="col-lg-2"><input class='form-control' type='text' t-attf-name="#{counter}-zip"/></div>
+                                        </t>
+                                        <input class='d-none' type='text' t-attf-name="#{counter}-ticket_id" t-attf-value="#{ticket['id']}"/>
+                                    </div>
+                                </t>
+                                <t t-set="counter_type" t-value="counter_type + 1"/>
+                            </t>
+                        </div>
+                    </main>
+        </xpath>
+    </data>
+    </template>
+
+
+</odoo>
